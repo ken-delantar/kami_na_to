@@ -3,16 +3,21 @@
 <div class="bg-white rounded-lg shadow p-6">
     <h2 class="text-xl font-semibold mb-6">Add New Student</h2>
 
-    <form method="post">
+    <form method="post" action="./back-end/student_form.php">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Student Number *</label>
-                <input type="text" name="first_name" class="w-full border rounded p-2" required>
+                <input type="text" name="student_number" class="w-full border rounded p-2" required>
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Full name *</label>
-                <input type="text" name="last_name" class="w-full border rounded p-2" required>
+                <input type="text" name="Fullname" class="w-full border rounded p-2" required>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">LRN *</label>
+                <input type="text" name="LRN" class="w-full border rounded p-2" required>
             </div>
 
             <div>
@@ -55,7 +60,7 @@
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">School Origin</label>
-                <select name="school_year_id" class="w-full border rounded p-2">
+                <select name="school_origin" class="w-full border rounded p-2">
                     <option value="">School Origin</option>
                     <option value="1">Public</option> <!-- Placeholder data -->
                     <option value="2">Private</option>
@@ -74,7 +79,7 @@
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                <select name="school_year_id" class="w-full border rounded p-2">
+                <select name="status" class="w-full border rounded p-2">
                     <option value="">Status</option>
                     <option value="1">Active</option> <!-- Placeholder data -->
                     <option value="2">Inactive</option>
@@ -93,10 +98,19 @@
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Sex</label>
-                <select name="school_year_id" class="w-full border rounded p-2">
+                <select name="sex" class="w-full border rounded p-2">
                     <option value="">Sex</option>
                     <option value="1">Male</option> <!-- Placeholder data -->
                     <option value="2">Female</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">condition</label>
+                <select name="condition" class="w-full border rounded p-2">
+                    <option value="">NA</option>
+                    <option value="1">Nomral</option> <!-- Placeholder data -->
+                    <option value="2">PWD</option>
                 </select>
             </div>
 
@@ -112,7 +126,7 @@
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Start of Class</label>
-                    <input type="text" name="" class="w-full border rounded p-2" required>
+                    <input type="text" name="" class="w-full border rounded p-2">
                 </select>
             </div>
 
