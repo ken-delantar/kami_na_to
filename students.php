@@ -11,6 +11,10 @@
     $sql = "SELECT * FROM school_years";
     $school_years = executeQuery($sql);
     $school_years = $school_years->fetchAll(PDO::FETCH_ASSOC);
+
+    $sql = "SELECT * FROM sections";
+    $sections = executeQuery($sql);
+    $sections = $sections->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <div class="bg-white rounded-lg shadow p-6">
@@ -39,9 +43,9 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Section</label>
             <select id="sectionSelect" onchange="handleSectionSelection(this)" class="w-full border rounded p-2">
                 <option value="">All Sections</option>
-                <?php foreach ($strand as $row): ?>
-                    <option value="<?= htmlspecialchars($row['strand']) ?>">
-                        <?= htmlspecialchars($row['strand']) ?>
+                <?php foreach ($sections as $row): ?>
+                    <option value="<?= htmlspecialchars($row['section_name']) ?>">
+                        <?= htmlspecialchars($row['section_name']) ?>
                     </option>
                 <?php endforeach; ?>
                 <option value="add">+ Add</option>
@@ -140,7 +144,7 @@
     <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
         <h2 class="text-xl font-semibold mb-4">Add New Section</h2>
         <div class="flex justify-end space-x-2">
-            <form action="/back-end/student.php" method="POST">
+            <form action="back-end/student.php" method="POST">
                 <input type="hidden" name="action" value="addSection">
 
                 <select name="school_year" class="w-full border rounded p-2 mb-4">
@@ -160,8 +164,8 @@
                 </select>
 
                 <select name="grade_level" class="w-full border rounded p-2 mb-4">
-                    <option value="Grade 11">Grade 11</option>
-                    <option value="Grade 12">Grade 12</option>
+                    <option value="11">Grade 11</option>
+                    <option value="12">Grade 12</option>
                 </select>
 
                 <input type="number" name="section" placeholder="Section Name" class="w-full border rounded p-2 mb-4">
