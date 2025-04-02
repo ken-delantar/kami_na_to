@@ -1,9 +1,9 @@
 <?php
 // Database configuration
-define('DB_SERVER', 'localhost');
-define('DB_USERNAME', 'root');
-define('DB_PASSWORD', '');
-define('DB_NAME', 'student_management_system');
+define('DB_SERVER', '157.173.111.118');
+define('DB_USERNAME', 'core3_shs_file');
+define('DB_PASSWORD', 'root');
+define('DB_NAME', 'core3_shs_file');
 
 // Attempt to connect to MySQL database
 try {

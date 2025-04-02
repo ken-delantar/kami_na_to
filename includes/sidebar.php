@@ -1,4 +1,4 @@
-<div class="w-64 bg-blue-800 text-white flex flex-col">
+<div class="w-64 bg-indigo-900 text-white flex flex-col">
     <div class="p-4 border-b border-Red-500">
         <h2 class="text-xl font-semibold">Senior High School Profile</h2>
     </div>
@@ -38,11 +38,6 @@
                 <li class="mb-1">
                     <a href="documents.php" class="block px-3 py-2 rounded hover:bg-blue-700 transition">
                         <i class="fas fa-file-upload mr-2"></i> Document Upload
-                    </a>
-                </li>
-                <li class="mb-1">
-                    <a href="sections.php" class="block px-3 py-2 rounded hover:bg-blue-700 transition">
-                        <i class="fas fa-layer-group mr-2"></i> Manage Sections
                     </a>
                 </li>
             </ul>
