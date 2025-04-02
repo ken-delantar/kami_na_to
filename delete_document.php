@@ -1,6 +1,6 @@
 <?php
 require_once 'includes/db_connection.php';
-
+//kupal
 if (isset($_GET['id'])) {
     $documentId = (int)$_GET['id'];
     
