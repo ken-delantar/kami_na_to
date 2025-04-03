@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             new Exception('Error: Unable to insert student.');
         }
-    } catch (PDOException $e) {
+    } catch (Exception $e) {
         $_SESSION['error'] = $e->getMessage();
         echo $e->getMessage();
         // header('Location: ' . $_SERVER['HTTP_REFERER']);
