@@ -111,7 +111,7 @@
                         <td class="px-6 py-4 whitespace-nowrap"><?= $student['status'] ?></td>
                         <td class="px-6 py-4 whitespace-nowrap">Regular</td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <a href="student_form.php?id=<?= $student['id'] ?>" class="text-blue-600 hover:text-blue-900 mr-3">
+                            <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">
                                 <i class="fas fa-edit"></i>
                             </a>
                             <a href="documents.php?student_id=<?= $student['id'] ?>" class="text-green-600 hover:text-green-900 mr-3">
@@ -129,6 +129,7 @@
 </div>
 
 <!-- Modals -->
+
 <!-- Strand Modal -->
 <div id="addStrand" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
     <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
