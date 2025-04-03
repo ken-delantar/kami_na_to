@@ -11,8 +11,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $status = $_POST['status'];
 
     try {
-        $sql = "INSERT INTO students (name, lrn, sex, school_origin, `condition`, status, created_at, updated_at) 
-                VALUES (:name, :lrn, :sex, :school_origin, :condition, :status, NOW(), NOW())";
+        $sql = "INSERT INTO students (name, lrn, sex, school_origin, `condition`, status, created_at, updated_at, id) 
+                VALUES (:name, :lrn, :sex, :school_origin, :condition, :status, NOW(), NOW(), :student_number)";
 
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':name', $name);
@@ -21,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(':school_origin', $school_origin);
         $stmt->bindParam(':condition', $condition);
         $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':student_number', $student_number);
 
         if ($stmt->execute()) {
             $_SESSION['success'] = "School year added successfully!";
@@ -31,8 +32,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     } catch (PDOException $e) {
         $_SESSION['error'] = $e->getMessage();
-        header('Location: ' . $_SERVER['HTTP_REFERER']);
-        exit;
+        echo $e->getMessage();
+        // header('Location: ' . $_SERVER['HTTP_REFERER']);
+        // exit;
     }
 }
 ?>

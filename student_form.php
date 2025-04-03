@@ -125,29 +125,28 @@
             </div>
 
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">condition</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Condition</label>
                 <select name="condition" class="w-full border rounded p-2">
                     <option value="">NA</option>
-                    <option value="1">Nomral</option> <!-- Placeholder data -->
-                    <option value="2">PWD</option>
+                    <option value="1">4Ps</option>
                 </select>
             </div>
 
-            <div>
+            <!-- <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Year End Status</label>
                 <select name="school_year_id" class="w-full border rounded p-2">
                     <option value="">Year End Status</option>
-                    <option value="1">Passed</option> <!-- Placeholder data -->
+                    <option value="1">Passed</option>
                     <option value="2">Failed</option>
                     <option value="3">NA</option>
                 </select>
-            </div>
+            </div> -->
 
-            <div>
+            <!-- <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Start of Class</label>
                     <input type="text" name="" class="w-full border rounded p-2">
                 </select>
-            </div>
+            </div> -->
 
 
         <div class="mt-6 flex justify-end space-x-3">
