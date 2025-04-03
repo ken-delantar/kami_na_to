@@ -38,37 +38,35 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['a
     $section = $_POST['section'] ?? '';
     $section = htmlspecialchars(trim($section));
 
-
     try {
-        if (!empty($school_year) && !empty($strand) && !empty($grade_level) && !empty($section)){
-            $sql = "INSERT INTO sections (school_year_id, strand_id, section_name, grade_level) VALUES (:school_year, :strand, :section, :grade_level)";
+        if (!empty($school_year) && !empty($strand) && !empty($grade_level) && !empty($section)) {
+            $sql = "INSERT INTO sections (school_year_id, strand_id, section_name, grade_level) 
+                    VALUES (:school_year, :strand, :section, :grade_level)";
             $params = [
                 ':school_year' => $school_year,
                 ':strand' => $strand,
                 ':grade_level' => $grade_level,
                 ':section' => $section,
             ];
-
+    
             $result = executeQuery($sql, $params);
-
-            if(!$result){
-                throw new Exception('Something went wrong.');
-            } else {
-                echo 'Success';
+    
+            if (!$result) {
+                throw new Exception('Something went wrong. SQL: ' . print_r($params, true));
             }
-
-            // $_SESSION['success'] = "Section added successfully!";
-            // header('Location: ' . $_SERVER['HTTP_REFERER']);
-            // exit;
+            
+            $_SESSION['success'] = "School year added successfully!";
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+            exit;
         } else {
             throw new Exception('All fields are required.');
         }
     } catch (\Exception $e) {
-        echo $e->getMessage();
-        // $_SESSION['error'] = $e->getMessage();
-        // header('Location: ' . $_SERVER['HTTP_REFERER']); 
-        // exit;
+        $_SESSION['error'] = $e->getMessage();
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        exit;
     }
+    
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] == 'addSchoolYear') {
