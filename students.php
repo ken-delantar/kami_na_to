@@ -1,5 +1,17 @@
 <?php
+    // include '../includes/db_connection.php';
+    include './includes/db_connection.php';
     require_once 'includes/header.php';
+
+    //Strand
+    $sql = "SELECT * FROM strands";
+    $strands = executeQuery($sql);
+    $strands = $strands->fetchAll(PDO::FETCH_ASSOC);
+
+    //School Year
+    $sql = "SELECT * FROM school_years";
+    $school_years = executeQuery($sql);
+    $school_years = $school_years->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <div class="bg-white rounded-lg shadow p-6">
@@ -10,12 +22,16 @@
         </a>
     </div>
 
-    <!-- Filters -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Strand</label>
             <select id="strandSelect" onchange="handleStrandSelection(this)" class="w-full border rounded p-2">
                 <option value="">All Strands</option>
+                <?php foreach ($strands as $row): ?>
+                    <option value="<?= htmlspecialchars($row['strand']) ?>">
+                        <?= htmlspecialchars($row['strand']) ?>
+                    </option>
+                <?php endforeach; ?>
                 <option value="add">+ Add</option>
             </select>
         </div>
@@ -24,6 +40,11 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Section</label>
             <select id="sectionSelect" onchange="handleSectionSelection(this)" class="w-full border rounded p-2">
                 <option value="">All Sections</option>
+                <?php foreach ($strand as $row): ?>
+                    <option value="<?= htmlspecialchars($row['strand']) ?>">
+                        <?= htmlspecialchars($row['strand']) ?>
+                    </option>
+                <?php endforeach; ?>
                 <option value="add">+ Add</option>
             </select>
         </div>
@@ -32,6 +53,11 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">School Year</label>
             <select id="schoolYearSelect" onchange="handleSchoolYearSelection(this)" class="w-full border rounded p-2">
                 <option value="">All Years</option>
+                <?php foreach ($school_years as $row): ?>
+                    <option value="<?= htmlspecialchars($row['year_start']) . ' - ' . htmlspecialchars($row['year_end']) ?>">
+                        <?= htmlspecialchars($row['year_start']) . ' - ' . htmlspecialchars($row['year_end']) ?>
+                    </option>
+                <?php endforeach; ?>
                 <option value="add">+ Add</option>
             </select>
         </div>
@@ -100,14 +126,13 @@
 
         <form action="/back-end/student.php" method="POST">
             <input type="hidden" name="action" value="addStrand">
-            <button type="submit">Submit</button>
+            
+            <input type="text" name="strand" class="w-full border rounded p-2 mb-4" placeholder="Enter new strand">
+            <div class="flex justify-end space-x-2">
+                <button onclick="closeModal('addStrand')" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancel</button>
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Save</button>
+            </div>
         </form>
-
-        <input type="text" id="newStrand" class="w-full border rounded p-2 mb-4" placeholder="Enter new strand">
-        <div class="flex justify-end space-x-2">
-            <button onclick="closeModal('addStrand')" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancel</button>
-            <button onclick="saveStrand()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Save</button>
-        </div>
     </div>
 </div>
 
@@ -115,13 +140,39 @@
 <div id="addSection" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
     <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
         <h2 class="text-xl font-semibold mb-4">Add New Section</h2>
-        <input type="text" id="newSection" class="w-full border rounded p-2 mb-4" placeholder="Enter new section">
         <div class="flex justify-end space-x-2">
-            <form action="" method="POST">
-                <button type="submit">Submit</button>
+            <form action="/back-end/student.php" method="POST">
+                <input type="hidden" name="action" value="addSection">
+
+                <select name="school_year" class="w-full border rounded p-2 mb-4">
+                    <?php foreach ($school_years as $row): ?>
+                        <option value="<?= htmlspecialchars($row['id']) ?>">
+                            <?= htmlspecialchars($row['year_start']) . ' - ' . htmlspecialchars($row['year_end']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+
+                <select name="strand" class="w-full border rounded p-2 mb-4">
+                    <?php foreach ($strands as $row): ?>
+                        <option value="<?= htmlspecialchars($row['id']) ?>">
+                            <?= htmlspecialchars($row['strand']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+
+                <select name="grade_level" class="w-full border rounded p-2 mb-4">
+                    <option value="Grade 11">Grade 11</option>
+                    <option value="Grade 12">Grade 12</option>
+                </select>
+
+                <input type="number" name="section" placeholder="Section Name" class="w-full border rounded p-2 mb-4">
+
+                <div class="flex justify-end space-x-2">
+                    <button onclick="closeModal('addStrand')" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancel</button>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Insert</button>
+                </div>
+
             </form>
-            <button onclick="closeModal('addSection')" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancel</button>
-            <button onclick="saveSection()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Save</button>
         </div>
     </div>
 </div>
@@ -129,12 +180,18 @@
 <!-- School Year Modal -->
 <div id="addSchoolYear" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
     <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
-        <h2 class="text-xl font-semibold mb-4">Add New School Year</h2>
-        <input type="text" id="newSchoolYear" class="w-full border rounded p-2 mb-4" placeholder="Enter new school year">
-        <div class="flex justify-end space-x-2">
-            <button onclick="closeModal('addSchoolYear')" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancel</button>
-            <button onclick="saveSchoolYear()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Save</button>
-        </div>
+        <h2 class="text-xl font-semibold mb-4">Add School Year</h2>
+
+        <form action="/back-end/student.php" method="POST">
+            <input type="hidden" name="action" value="addSchoolYear" class="w-full border rounded p-2 mb-4">
+            <input type="number" name="year_start" placeholder="Year Start" class="w-full border rounded p-2 mb-4">
+            <input type="number" name="year_end" placeholder="Year End" class="w-full border rounded p-2 mb-4">
+            <input type="date" name="class_start" placeholder="Class Start">
+            <div class="flex justify-end space-x-2">
+                <button onclick="closeModal('addStrand')" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancel</button>
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Save</button>
+            </div>
+        </form>
     </div>
 </div>
 

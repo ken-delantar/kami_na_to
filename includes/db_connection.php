@@ -18,7 +18,31 @@ function executeQuery($sql, $params = []) {
         $stmt->execute($params);
         return $stmt;
     } catch(PDOException $e) {
-        die("ERROR: Could not execute query. " . $e->getMessage());
+        $_SESSION['error'] = $e->getMessage();
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
     }
 }
+
+function retrieve($sql, $params = []) {
+    global $pdo;
+    try {
+        $stmt = $pdo->prepare($sql);
+        
+        if (!empty($params)) {
+            foreach ($params as $key => $value) {
+                $stmt->bindValue($key, $value);
+            }
+        }
+
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ? $result : null;
+    } catch(PDOException $e) {
+        $_SESSION['error'] = $e->getMessage();
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        exit();
+    }
+}
+
 ?>

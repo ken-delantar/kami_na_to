@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($stmt->execute()) {
             // echo "Student added successfully!";
-            header("location: http://localhost/kami_na_to?insert=success");
+            header("location: http://localhost/kami_na_to/?insert=success");
         } else {
             echo "Error: Unable to insert student.";
         }
