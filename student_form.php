@@ -1,9 +1,27 @@
-<?php require_once 'includes/header.php'; ?>
+<?php 
+    
+    require_once 'includes/header.php'; 
+    include './includes/db_connection.php';
+
+    $sql = "SELECT * FROM strands";
+    $strands = executeQuery($sql);
+    $strands = $strands->fetchAll(PDO::FETCH_ASSOC);
+
+    //School Year
+    $sql = "SELECT * FROM school_years";
+    $school_years = executeQuery($sql);
+    $school_years = $school_years->fetchAll(PDO::FETCH_ASSOC);
+
+    $sql = "SELECT * FROM sections";
+    $sections = executeQuery($sql);
+    $sections = $sections->fetchAll(PDO::FETCH_ASSOC);
+
+?>
 
 <div class="bg-white rounded-lg shadow p-6">
     <h2 class="text-xl font-semibold mb-6">Add New Student</h2>
 
-    <form method="post" action="./back-end/student_form.php">
+    <form method="post" action="./back-end/student_form.php?action=submit">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Student Number *</label>
@@ -32,10 +50,10 @@
                 <label class="block text-sm font-medium text-gray-700 mb-1">Strand</label>
                 <select name="strand_id" class="w-full border rounded p-2">
                     <option value="">Select Strand</option>
-                    <option value="1">STEM</option> <!-- Placeholder data -->
-                    <option value="2">ABM</option>
-                    <option value="3">HUMSS</option>
-                    <option value="4">GAS</option>
+                    
+                    <?php foreach ($strands as $strand): ?>
+                        <option value="<?= $strand['id'] ?>"> <?= htmlspecialchars($strand['strand']) ?> </option>
+                    <?php endforeach; ?>
                 </select>
             </div>
 
@@ -43,9 +61,9 @@
                 <label class="block text-sm font-medium text-gray-700 mb-1">Section</label>
                 <select name="section_id" class="w-full border rounded p-2">
                     <option value="">Select Section</option>
-                    <option value="1">Section 1</option> <!-- Placeholder data -->
-                    <option value="2">Section 2</option>
-                    <option value="3">Section 3</option>
+                    <?php foreach ($sections as $section): ?>
+                        <option value="<?= $section['id'] ?>"> <?= htmlspecialchars($section['section_name']) ?> </option>
+                    <?php endforeach; ?>
                 </select>
             </div>
 
@@ -53,8 +71,9 @@
                 <label class="block text-sm font-medium text-gray-700 mb-1">School Year</label>
                 <select name="school_year_id" class="w-full border rounded p-2">
                     <option value="">Select School Year</option>
-                    <option value="1">2024-2025</option> <!-- Placeholder data -->
-                    <option value="2">2023-2024</option>
+                    <?php foreach ($school_years as $school_year): ?>
+                        <option value="<?= $school_year['id'] ?>"> <?= htmlspecialchars($school_year['year_start']) . ' - ' .  htmlspecialchars($school_year['year_end']) ?> </option>
+                    <?php endforeach; ?>
                 </select>
             </div>
 

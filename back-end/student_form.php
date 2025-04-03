@@ -23,13 +23,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(':status', $status);
 
         if ($stmt->execute()) {
-            // echo "Student added successfully!";
-            header("location: http://localhost/kami_na_to/?insert=success");
+            $_SESSION['success'] = "School year added successfully!";
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+            exit;
         } else {
-            echo "Error: Unable to insert student.";
+            new Exception('Error: Unable to insert student.');
         }
     } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        $_SESSION['error'] = $e->getMessage();
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        exit;
     }
 }
 ?>
