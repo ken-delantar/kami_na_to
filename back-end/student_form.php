@@ -24,9 +24,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(':student_number', $student_number);
 
         if ($stmt->execute()) {
-            $_SESSION['success'] = "School year added successfully!";
-            header('Location: ' . $_SERVER['HTTP_REFERER']);
-            exit;
+
+            $strand = $_POST['strand_id'];
+            $school_year = $_POST['school_year_id'];
+            $section = $_POST['section_id'];
+            $year_end_status = 'Not Specified';
+
+            $sql = "INSERT INTO academic_records (student_id, strand_id, school_year_id, section_id, year_end_status) VALUES (:student_id, :strand_id, :school_year_id, :section_id, :year_end_status)";
+            
+            $params = [
+                ':student_id' => $student_number,
+                ':strand_id' => $strand,
+                ':school_year_id' => $school_year,
+                ':section_id' => $section,
+                ':year_end_status' => $year_end_status,
+            ];
+            $result = executeQuery($sql, $params);
+            
+            if($result){
+                $_SESSION['success'] = 'Inserted Successfully failed.';
+                header('Location: ' . $_SERVER['HTTP_REFERER']);
+                exit;
+            } else {
+                new Exception('Error: Unable to insert student.');
+            }
         } else {
             new Exception('Error: Unable to insert student.');
         }

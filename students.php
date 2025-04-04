@@ -49,10 +49,13 @@
     if (!empty($whereClauses)) {
         $sql .= " WHERE " . implode(" AND ", $whereClauses);
     }
-
     // Execute the query with the filtering parameters
     $students = executeQuery($sql, $params);
     $students = $students->fetchAll(PDO::FETCH_ASSOC);
+
+    $sql = "SELECT * academic_records";
+    $academic_records = executeQuery($sql);
+    $academic_records = $academic_records->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <div class="bg-white rounded-lg shadow p-6">
@@ -63,10 +66,11 @@
         </a>
     </div>
 
+    <form method="get" id="filterForm">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Strand</label>
-            <select name="strand" class="w-full border rounded p-2" onchange="this.form.submit()">
+            <select name="strand" class="w-full border rounded p-2" onchange="submitFilterForm()">
                 <option value="">All Strands</option>
                 <?php foreach ($strands as $row): ?>
                     <option value="<?= htmlspecialchars($row['strand']) ?>" <?= isset($_GET['strand']) && $_GET['strand'] == $row['strand'] ? 'selected' : '' ?>>
@@ -76,10 +80,10 @@
                 <option value="add">+ Add</option>
             </select>
         </div>
-        
+
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Section</label>
-            <select name="section" class="w-full border rounded p-2" onchange="this.form.submit()">
+            <select name="section" class="w-full border rounded p-2" onchange="submitFilterForm()">
                 <option value="">All Sections</option>
                 <?php foreach ($sections as $row): ?>
                     <option value="<?= htmlspecialchars($row['section_name']) ?>" <?= isset($_GET['section']) && $_GET['section'] == $row['section_name'] ? 'selected' : '' ?>>
@@ -89,10 +93,10 @@
                 <option value="add">+ Add</option>
             </select>
         </div>
-        
+
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">School Year</label>
-            <select name="school_year" class="w-full border rounded p-2" onchange="this.form.submit()">
+            <select name="school_year" class="w-full border rounded p-2" onchange="submitFilterForm()">
                 <option value="">All Years</option>
                 <?php foreach ($school_years as $row): ?>
                     <option value="<?= htmlspecialchars($row['year_start']) . ' - ' . htmlspecialchars($row['year_end']) ?>" <?= isset($_GET['school_year']) && $_GET['school_year'] == $row['year_start'] . ' - ' . $row['year_end'] ? 'selected' : '' ?>>
@@ -102,17 +106,19 @@
                 <option value="add">+ Add</option>
             </select>
         </div>
-        
+
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Search</label>
-            <form method="get" class="flex">
-                <input type="text" name="search" placeholder="Search students..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>" class="flex-1 border rounded-l p-2" onchange="this.form.submit()">
+            <div class="flex">
+                <input type="text" name="search" placeholder="Search students..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>" class="flex-1 border rounded-l p-2">
                 <button type="submit" class="bg-blue-600 text-white px-4 rounded-r hover:bg-blue-700 transition">
                     <i class="fas fa-search"></i>
                 </button>
-            </form>
+            </div>
         </div>
     </div>
+</form>
+
 
     <!-- Students Table -->
     <div class="overflow-x-auto">
@@ -133,6 +139,10 @@
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                 <?php foreach ($students as $student): ?>
+                    <? foreach ($academic_records as $academic_record): ?>
+                        
+                    <? endforeach; ?>
+
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap"><?= $student['lrn'] ?></td>
                         <td class="px-6 py-4 whitespace-nowrap"><?= $student['id'] ?></td>
@@ -163,51 +173,73 @@
 
 <!-- Modals (Add Strand, Section, School Year) remain the same -->
 
+
+
 <script>
-function handleStrandSelection(select) {
-    if (select.value === "add") {
-        select.value = "";
-        document.getElementById("addStrand").classList.remove("hidden");
-    }
-}
+    function submitFilterForm() {
+        const form = document.getElementById('filterForm');
+        const selects = form.querySelectorAll('select');
 
-function handleSectionSelection(select) {
-    if (select.value === "add") {
-        select.value = "";
-        document.getElementById("addSection").classList.remove("hidden");
+        selects.forEach(select => {
+            if (select.value === "add") {
+                // Prevent submission and open modals
+                if (select.name === "strand") {
+                    handleStrandSelection(select);
+                } else if (select.name === "section") {
+                    handleSectionSelection(select);
+                } else if (select.name === "school_year") {
+                    handleSchoolYearSelection(select);
+                }
+            } else {
+                form.submit();
+            }
+        });
     }
-}
 
-function handleSchoolYearSelection(select) {
-    if (select.value === "add") {
-        select.value = "";
-        document.getElementById("addSchoolYear").classList.remove("hidden");
+    function handleStrandSelection(select) {
+        if (select.value === "add") {
+            select.value = "";
+            document.getElementById("addStrand").classList.remove("hidden");
+        }
     }
-}
 
-function closeModal(modalId) {
-    document.getElementById(modalId).classList.add("hidden");
-}
-
-function saveSection() {
-    let newSection = document.getElementById("newSection").value;
-    if (newSection.trim() !== "") {
-        alert("New Section Added: " + newSection);
-        closeModal('addSection');
-    } else {
-        alert("Please enter a section name.");
+    function handleSectionSelection(select) {
+        if (select.value === "add") {
+            select.value = "";
+            document.getElementById("addSection").classList.remove("hidden");
+        }
     }
-}
 
-function saveSchoolYear() {
-    let newSchoolYear = document.getElementById("newSchoolYear").value;
-    if (newSchoolYear.trim() !== "") {
-        alert("New School Year Added: " + newSchoolYear);
-        closeModal('addSchoolYear');
-    } else {
-        alert("Please enter a school year.");
+    function handleSchoolYearSelection(select) {
+        if (select.value === "add") {
+            select.value = "";
+            document.getElementById("addSchoolYear").classList.remove("hidden");
+        }
     }
-}
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.add("hidden");
+    }
+
+    function saveSection() {
+        let newSection = document.getElementById("newSection").value;
+        if (newSection.trim() !== "") {
+            alert("New Section Added: " + newSection);
+            closeModal('addSection');
+        } else {
+            alert("Please enter a section name.");
+        }
+    }
+
+    function saveSchoolYear() {
+        let newSchoolYear = document.getElementById("newSchoolYear").value;
+        if (newSchoolYear.trim() !== "") {
+            alert("New School Year Added: " + newSchoolYear);
+            closeModal('addSchoolYear');
+        } else {
+            alert("Please enter a school year.");
+        }
+    }
 </script>
 
 <?php require_once 'includes/footer.php'; ?>
