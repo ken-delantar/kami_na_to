@@ -40,6 +40,11 @@
                         <i class="fas fa-file-upload mr-2"></i> Document Upload
                     </a>
                 </li>
+                <li class="mb-1">
+                    <a href="checklist.php" class="block px-3 py-2 rounded hover:bg-blue-700 transition">
+                        <i class="fas fa-file-upload mr-2"></i>Checklist
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>

@@ -2,7 +2,7 @@
 session_start();
 // Redirect to login if not authenticated
 // if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-//     header("Location: ../login.php");
+//     header("Location: ./login.php");
 //     exit();
 // }
 ?>
@@ -32,7 +32,7 @@ session_start();
                     <h1 class="text-2xl font-semibold text-gray-800">Student Management System</h1>
                     <div class="flex items-center space-x-4">
                         <span class="text-gray-600">Welcome, Admin</span>
-                        <a href="../logout.php" class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white hover:bg-blue-600 transition">
+                        <a href="./back-end/logout.php" class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white hover:bg-blue-600 transition">
                             <i class="fas fa-sign-out-alt"></i>
                         </a>
                     </div>
