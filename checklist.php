@@ -109,46 +109,45 @@ $students = $students->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <h2 class="text-xl font-semibold mb-4">Student Checklist</h2>
-    <form method="POST">
-        <table class="min-w-full table-auto">
-            <thead>
+    <form method="POST" action="./back-end/documents.php">
+    <table class="min-w-full table-auto">
+        <thead>
+            <tr>
+                <th class="px-4 py-2 border">Student ID</th>
+                <th class="px-4 py-2 border">Name</th>
+                <th class="px-4 py-2 border">Form 137</th>
+                <th class="px-4 py-2 border">Form 138</th>
+                <th class="px-4 py-2 border">Good Moral</th>
+                <th class="px-4 py-2 border">PSA</th>
+                <th class="px-4 py-2 border">2x2 Picture</th>
+                <th class="px-4 py-2 border">ESC Certificate</th>
+                <th class="px-4 py-2 border">Diploma</th>
+                <th class="px-4 py-2 border">Barangay Clearance</th>
+                <th class="px-4 py-2 border">NCAE</th>
+                <th class="px-4 py-2 border">AF-5</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($students as $student): ?>
                 <tr>
-                    <th class="px-4 py-2 border">#</th> <!-- Number column -->
-                    <th class="px-4 py-2 border">Name</th>
-                    <th class="px-4 py-2 border">Form 137</th>
-                    <th class="px-4 py-2 border">Form 138</th>
-                    <th class="px-4 py-2 border">Good Moral</th>
-                    <th class="px-4 py-2 border">PSA</th>
-                    <th class="px-4 py-2 border">2x2 Picture</th>
-                    <th class="px-4 py-2 border">ESC Certificate</th>
-                    <th class="px-4 py-2 border">Diploma</th>
-                    <th class="px-4 py-2 border">Barangay Clearance</th>
-                    <th class="px-4 py-2 border">NCAE</th>
-                    <th class="px-4 py-2 border">AF-5</th>
+                    <td class="px-4 py-2 border"><?= $student['id'] ?></td>
+                    <td class="px-4 py-2 border"><?= htmlspecialchars($student['name']) ?></td>
+                    <?php
+                        $docs = ['Form 137', 'Form 138', 'Good Moral Certificate', 'PSA', '2x2 Picture', 'ESC Certificate', 'Diploma', 'Barangay Clearance', 'NCAE', 'AF-5'];
+                        foreach ($docs as $doc):
+                    ?>
+                        <td class="px-4 py-2 border">
+                            <input type="checkbox" name="documents[<?= $student['id'] ?>][]" value="<?= $doc ?>">
+                        </td>
+                    <?php endforeach; ?>
                 </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($students as $key => $student): ?>
-                    <tr>
-                        <td class="px-4 py-2 border"><?= $key + 1 ?></td> <!-- Display row number -->
-                        <td class="px-4 py-2 border"><?= htmlspecialchars($student['name']) ?></td>
-                        <td class="px-4 py-2 border"><input type="checkbox" name="documents[<?= $student['id'] ?>][]" value="Form 137"></td>
-                        <td class="px-4 py-2 border"><input type="checkbox" name="documents[<?= $student['id'] ?>][]" value="Form 138"></td>
-                        <td class="px-4 py-2 border"><input type="checkbox" name="documents[<?= $student['id'] ?>][]" value="Good Moral Certificate"></td>
-                        <td class="px-4 py-2 border"><input type="checkbox" name="documents[<?= $student['id'] ?>][]" value="PSA"></td>
-                        <td class="px-4 py-2 border"><input type="checkbox" name="documents[<?= $student['id'] ?>][]" value="2x2 Picture"></td>
-                        <td class="px-4 py-2 border"><input type="checkbox" name="documents[<?= $student['id'] ?>][]" value="ESC Certificate"></td>
-                        <td class="px-4 py-2 border"><input type="checkbox" name="documents[<?= $student['id'] ?>][]" value="Diploma"></td>
-                        <td class="px-4 py-2 border"><input type="checkbox" name="documents[<?= $student['id'] ?>][]" value="Barangay Clearance"></td>
-                        <td class="px-4 py-2 border"><input type="checkbox" name="documents[<?= $student['id'] ?>][]" value="NCAE"></td>
-                        <td class="px-4 py-2 border"><input type="checkbox" name="documents[<?= $student['id'] ?>][]" value="AF-5"></td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-        <br>
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Submit</button>
-    </form>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    <br>
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Submit</button>
+</form>
+
 </div>
 
 <?php include_once "./includes/footer.php"; ?>
